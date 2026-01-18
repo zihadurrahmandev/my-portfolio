@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Crazy Developer BD</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <style>
+        /* Custom Styles for Neon Theme */
+        :root {
+            --neon-green: #39ff14;
+            --neon-accent: #00ff88;
+            --dark-bg: #0a0f0d;
+            --glass: rgba(57, 255, 20, 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .font-fira {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        /* Neon Glow Effects */
+        .neon-glow {
+            box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+        }
+        
+        .neon-glow-subtle {
+            box-shadow: 0 0 5px var(--neon-accent);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+        }
+        
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+        
+        /* 3D Tilt Effect */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.02);
+            box-shadow: 0 20px 40px rgba(57, 255, 20, 0.2);
+        }
+        
+        /* Particle Trail */
+        #particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0a0f0d;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #39ff14;
+            border-radius: 4px;
+        }
+        
+        /* Filter Button Active State */
+        .filter-btn.active {
+            background: linear-gradient(135deg, #39ff14, #00ff88);
+            color: #0a0f0d;
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        
+        /* Modal Transitions */
+        .modal-overlay {
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        /* Project Card Hover Effect */
+        .project-card:hover .project-image {
+            transform: scale(1.1);
+        }
+        
+        .project-card .project-image {
+            transition: transform 0.5s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Particle Canvas (Fixed) -->
+    <canvas id="particle-canvas"></canvas>
+
+    <!-- Header -->
+    <div data-include='header.html'></div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-20"> <!-- Added pt-20 to prevent header overlap -->
+        
+        <!-- Portfolio Section -->
+        <section id="portfolio" class="min-h-screen py-20 px-4 md:px-12 lg:px-20">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Section Header -->
+                <div class="text-center mb-16">
+                    <h1 class="font-orbitron text-4xl md:text-6xl font-bold text-[#39ff14] mb-4 tracking-wider">
+                        PROJECT SHOWCASE
+                    </h1>
+                    <div class="h-1 w-24 bg-gradient-to-r from-[#39ff14] to-[#00ff88] mx-auto mb-6"></div>
+                    <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+                        A curated collection of my work in web applications, Telegram bots, and Python automation.
+                    </p>
+                </div>
+                
+                <!-- Filter Buttons -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12" id="filter-container">
+                    <button class="filter-btn active px-6 py-2 rounded-full glass text-gray-300 font-medium transition-all duration-300 hover:scale-105 hover:text-[#39ff14]" data-filter="all">
+                        All Projects
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full glass text-gray-300 font-medium transition-all duration-300 hover:scale-105 hover:text-[#39ff14]" data-filter="web">
+                        Web Apps
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full glass text-gray-300 font-medium transition-all duration-300 hover:scale-105 hover:text-[#39ff14]" data-filter="bot">
+                        Telegram Bots
+                    </button>
+                    <button class="filter-btn px-6 py-2 rounded-full glass text-gray-300 font-medium transition-all duration-300 hover:scale-105 hover:text-[#39ff14]" data-filter="automation">
+                        Automation
+                    </button>
+                </div>
+                
+                <!-- Project Grid (Masonry Style) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="project-grid">
+                    
+                    <!-- Project Card 1 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="web" data-id="1">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">WEB APP</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 01</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">E-Commerce Dashboard</h3>
+                            <p class="text-gray-400 text-sm mb-4">Real-time analytics dashboard with React and Node.js.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">React</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Node.js</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">MongoDB</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 2 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="bot" data-id="2">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">BOT</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 02</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">Trading Alert Bot</h3>
+                            <p class="text-gray-400 text-sm mb-4">Automated trading signals via Telegram with API integration.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Python</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Telebot</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Binance API</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 3 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="automation" data-id="3">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">AUTO</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 03</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">Data Scraper Pipeline</h3>
+                            <p class="text-gray-400 text-sm mb-4">Automated web scraping and data processing system.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Selenium</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">BeautifulSoup</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Pandas</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 4 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="web" data-id="4">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">WEB APP</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 04</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">Task Management</h3>
+                            <p class="text-gray-400 text-sm mb-4">Collaborative project management tool with real-time sync.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Vue.js</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Firebase</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Tailwind</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 5 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="bot" data-id="5">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">BOT</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 05</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">Customer Support Bot</h3>
+                            <p class="text-gray-400 text-sm mb-4">AI-powered chatbot for automated customer service.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Python</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">NLP</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">TensorFlow</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Project Card 6 -->
+                    <div class="project-card tilt-card glass rounded-2xl overflow-hidden cursor-pointer" data-category="automation" data-id="6">
+                        <div class="relative h-48 overflow-hidden">
+                            <div class="project-image absolute inset-0 bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] flex items-center justify-center">
+                                <span class="font-orbitron text-4xl text-[#39ff14] opacity-30">AUTO</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <span class="text-xs font-fira text-[#39ff14] mb-2 inline-block">PROJECT 06</span>
+                            <h3 class="font-orbitron text-xl font-bold text-white mb-2">Report Generator</h3>
+                            <p class="text-gray-400 text-sm mb-4">Automated financial report generation and distribution.</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">Python</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">OpenPyXL</span>
+                                <span class="px-2 py-1 bg-[#1a1f1a] text-[#39ff14] text-xs rounded font-fira">SMTP</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <!-- No Results Message -->
+                <div id="no-results" class="hidden text-center py-16">
+                    <div class="inline-block p-4 rounded-full glass mb-4">
+                        <svg class="w-12 h-12 text-[#39ff14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="font-orbitron text-2xl text-white mb-2">No Projects Found</h3>
+                    <p class="text-gray-400">Try selecting a different filter category.</p>
+                </div>
+                
+            </div>
+        </section>
+        
+        <!-- Project Modal -->
+        <div id="project-modal" class="fixed inset-0 z-50 hidden">
+            <div class="modal-overlay absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-overlay"></div>
+            <div class="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
+                <div class="modal-content glass rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto transform scale-95 opacity-0">
+                    <div class="relative">
+                        <!-- Close Button -->
+                        <button id="modal-close" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 hover:bg-[#39ff14] text-[#39ff14] hover:text-black transition-all duration-300">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                        
+                        <!-- Modal Content -->
+                        <div class="p-8">
+                            <div class="h-48 rounded-xl bg-gradient-to-br from-[#1a1f1a] to-[#2d3748] mb-6 flex items-center justify-center">
+                                <span class="font-orbitron text-3xl text-[#39ff14] opacity-30">PREVIEW</span>
+                            </div>
+                            <span id="modal-category" class="text-xs font-fira text-[#39ff14] mb-2 inline-block">CATEGORY</span>
+                            <h3 id="modal-title" class="font-orbitron text-2xl font-bold text-white mb-4">Project Title</h3>
+                            <p id="modal-description" class="text-gray-300 mb-6">Project description goes here...</p>
+                            <div id="modal-tech" class="flex flex-wrap gap-2 mb-6"></div>
+                            <div class="flex gap-4">
+                                <a href="#" class="flex-1 text-center py-3 rounded-lg bg-gradient-to-r from-[#39ff14] to-[#00ff88] text-black font-bold transition-all duration-300 hover:scale-105">
+                                    Live Demo
+                                </a>
+                                <a href="#" class="flex-1 text-center py-3 rounded-lg glass text-[#39ff14] font-bold transition-all duration-300 hover:scale-105 border border-[#39ff14]/30">
+                                    View Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </main>
+
+    <!-- Footer -->
+    <div data-include='footer.html'></div>
+
+    <!-- Scripts -->
+    <script>
+        // =================================================================
+        // PARTICLE TRAIL CANVAS (Subtle Effect)
+        // =================================================================
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouseX = 0;
+        let mouseY = 0;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        class Particle {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.size = Math.random() * 2 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.life = 1;
+                this.color = `rgba(57, 255, 20, ${this.life})`;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life -= 0.02;
+                this.color = `rgba(57, 255, 20, ${this.life})`;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+
+        // Initialize Canvas
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+        animateParticles();
+
+        // Mouse movement for particle trail
+        let lastX = 0;
+        let lastY = 0;
+        document.addEventListener('mousemove', (e) => {
+            const distance = Math.sqrt(Math.pow(e.clientX - lastX, 2) + Math.pow(e.clientY - lastY, 2));
+            if (distance > 10) { // Only create particles if moved enough
+                for (let i = 0; i < 3; i++) {
+                    particles.push(new Particle(e.clientX, e.clientY));
+                }
+                lastX = e.clientX;
+                lastY = e.clientY;
+            }
+        });
+
+        // =================================================================
+        // GSAP ANIMATIONS (ScrollTrigger)
+        // =================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Animate Portfolio Header
+            gsap.from('#portfolio h1', {
+                y: 30,
+                opacity: 0,
+                duration: 1,
+                ease: 'power3.out'
+            });
+
+            gsap.from('#portfolio .h-1', {
+                width: 0,
+                duration: 1,
+                delay: 0.3,
+                ease: 'power2.out'
+            });
+
+            // Animate Filter Buttons (Stagger)
+            gsap.from('.filter-btn', {
+                y: 20,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '.filter-btn',
+                    start: 'top 90%'
+                }
+            });
+
+            // Animate Project Cards (Stagger)
+            gsap.from('.project-card', {
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.15,
+                ease: 'power2.out',
+                scrollTrigger: {
+                    trigger: '#project-grid',
+                    start: 'top 85%'
+                }
+            });
+        });
+
+        // =================================================================
+        // FILTER FUNCTIONALITY
+        // =================================================================
+        document.addEventListener('click', (e) => {
+            const filterBtn = e.target.closest('.filter-btn');
+            if (filterBtn) {
+                // Update Active State
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                filterBtn.classList.add('active');
+                
+                const filter = filterBtn.getAttribute('data-filter');
+                const cards = document.querySelectorAll('.project-card');
+                let visibleCount = 0;
+                
+                cards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    
+                    if (filter === 'all' || category === filter) {
+                        card.classList.remove('hidden');
+                        card.style.display = 'block'; // Ensure display is set
+                        visibleCount++;
+                    } else {
+                        card.classList.add('hidden');
+                        card.style.display = 'none';
+                    }
+                });
+                
+                // Show/Hide No Results Message
+                const noResults = document.getElementById('no-results');
+                if (visibleCount === 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+                
+                // Re-trigger GSAP animation for visible cards
+                gsap.from('.project-card:not(.hidden)', {
+                    y: 30,
+                    opacity: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: 'power2.out'
+                });
+            }
+        });
+
+        // =================================================================
+        // MODAL FUNCTIONALITY
+        // =================================================================
+        // Project Data (Simulated)
+        const projectData = {
+            '1': {
+                title: 'E-Commerce Dashboard',
+                category: 'Web App',
+                description: 'A comprehensive real-time analytics dashboard built for an e-commerce platform. Features include sales tracking, inventory management, user activity monitoring, and customizable reporting with export capabilities. Built with a microservices architecture for scalability.',
+                tech: ['React', 'Node.js', 'MongoDB', 'Redux', 'Express', 'D3.js']
+            },
+            '2': {
+                title: 'Trading Alert Bot',
+                category: 'Telegram Bot',
+                description: 'An automated trading bot that monitors cryptocurrency markets and sends real-time alerts to Telegram via customizable thresholds. Integrates with multiple exchanges and includes risk management features. Supports backtesting and strategy optimization.',
+                tech: ['Python', 'Telebot', 'Binance API', 'Pandas', 'TA-Lib']
+            },
+            '3': {
+                title: 'Data Scraper Pipeline',
+                category: 'Automation',
+                description: 'A robust web scraping pipeline designed to collect, clean, and process data from multiple sources automatically. Features anti-detection mechanisms, proxy rotation, and automated data validation. Outputs to databases and generates summary reports.',
+                tech: ['Selenium', 'BeautifulSoup', 'Pandas', 'Scrapy', 'PostgreSQL']
+            },
+            '4': {
+                title: 'Task Management',
+                category: 'Web App',
+                description: 'A collaborative project management tool with real-time synchronization, Kanban boards, task dependencies, and team collaboration features. Includes time tracking, file attachments, and integration with popular development tools.',
+                tech: ['Vue.js', 'Firebase', 'Tailwind CSS', 'Vuex', 'WebSockets']
+            },
+            '5': {
+                title: 'Customer Support Bot',
+                category: 'Telegram Bot',
+                description: 'An AI-powered customer service bot that handles common inquiries, processes support tickets, and escalates complex issues to human agents. Features natural language processing, sentiment analysis, and multi-language support.',
+                tech: ['Python', 'NLP', 'TensorFlow', 'FastAPI', 'Redis']
+            },
+            '6': {
+                title: 'Report Generator',
+                category: 'Automation',
+                description: 'An automated financial reporting system that extracts data from various sources, performs calculations, and generates professional PDF reports. Includes scheduling, email distribution, and customizable templates.',
+                tech: ['Python', 'OpenPyXL', 'ReportLab', 'SMTP', 'Cron']
+            }
+        };
+
+        let currentProjectId = null;
+
+        // Open Modal
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.project-card');
+            if (card) {
+                const id = card.getAttribute('data-id');
+                if (projectData[id]) {
+                    currentProjectId = id;
+                    openModal(projectData[id]);
+                }
+            }
+        });
+
+        function openModal(data) {
+            const modal = document.getElementById('project-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const content = modal.querySelector('.modal-content');
+            
+            // Populate Data
+            document.getElementById('modal-title').textContent = data.title;
+            document.getElementById('modal-category').textContent = data.category;
+            document.getElementById('modal-description').textContent = data.description;
+            
+            const techContainer = document.getElementById('modal-tech');
+            techContainer.innerHTML = '';
+            data.tech.forEach(tech => {
+                const span = document.createElement('span');
+                span.className = 'px-3 py-1 bg-[#1a1f1a] text-[#39ff14] text-sm rounded font-fira';
+                span.textContent = tech;
+                techContainer.appendChild(span);
+            });
+            
+            // Show Modal
+            modal.classList.remove('hidden');
+            overlay.style.opacity = '0';
+            content.style.transform = 'scale(0.95)';
+            content.style.opacity = '0';
+            
+            // Animate In
+            setTimeout(() => {
+                overlay.style.transition = 'opacity 0.3s ease';
+                overlay.style.opacity = '1';
+                content.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                content.style.transform = 'scale(1)';
+                content.style.opacity = '1';
+            }, 10);
+        }
+
+        // Close Modal
+        function closeModal() {
+            const modal = document.getElementById('project-modal');
+            const overlay = document.getElementById('modal-overlay');
+            const content = modal.querySelector('.modal-content');
+            
+            overlay.style.opacity = '0';
+            content.style.transform = 'scale(0.95)';
+            content.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                currentProjectId = null;
+            }, 300);
+        }
+
+        document.addEventListener('click', (e) => {
+            const closeBtn = e.target.closest('#modal-close');
+            const overlay = e.target.closest('#modal-overlay');
+            
+            if (closeBtn || overlay) {
+                closeModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && currentProjectId) {
+                closeModal();
+            }
+        });
+
+        // =================================================================
+        // INCLUDE SCRIPT (For Header/Footer)
+        // =================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-include]').forEach(el => {
+                fetch(el.getAttribute('data-include'))
+                    .then(response => response.text())
+                    .then(data => {
+                        el.innerHTML = data;
+                        // Execute scripts found in specific component
+                        el.querySelectorAll('script').forEach(oldScript => {
+                            const newScript = document.createElement('script');
+                            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                            document.body.appendChild(newScript);
+                        });
+                    });
+            });
+        });
+    </script>
+</body>
+</html>
