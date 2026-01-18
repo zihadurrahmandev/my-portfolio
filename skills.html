@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Crazy Developer BD</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP & ScrollTrigger CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <style>
+        :root {
+            --bg-dark: #0a0f0d;
+            --neon-green: #39ff14;
+            --accent: #00ff88;
+            --glass: rgba(57, 255, 20, 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+        
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .font-fira {
+            font-family: 'Fira Code', monospace;
+        }
+        
+        /* Neon Glow Effects */
+        .neon-text {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 40px var(--neon-green);
+        }
+        
+        .neon-border {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 5px var(--neon-green), inset 0 0 5px rgba(57, 255, 20, 0.1);
+        }
+        
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(57, 255, 20, 0.3), 0 0 40px rgba(57, 255, 20, 0.1);
+        }
+        
+        /* Glassmorphism */
+        .glass-card {
+            background: rgba(26, 31, 26, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+        
+        /* 3D Tilt Effect */
+        .tilt-card {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.3s ease;
+        }
+        
+        .tilt-card-inner {
+            transform: translateZ(20px);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-green);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent);
+        }
+        
+        /* Cursor Particle Trail Effect */
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.6;
+            transition: transform 0.1s ease-out, opacity 0.5s ease-out;
+        }
+        
+        /* Code Snippet Styling */
+        .code-snippet {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 2px solid var(--neon-green);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        /* Typing Cursor */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: var(--neon-green);
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        /* Skill Progress Bar Animation */
+        .progress-bar {
+            background: linear-gradient(90deg, var(--neon-green), var(--accent));
+        }
+        
+        /* Hover Glow on Interactive Elements */
+        .hover-glow:hover {
+            box-shadow: 0 0 25px rgba(57, 255, 20, 0.5);
+        }
+        
+        /* Transition classes */
+        .transition-all {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-[#0a0f0d]">
+    <!-- Header Include -->
+    <div data-include='header.html'></div>
+    
+    <!-- Main Content with Top Margin to Account for Fixed Header -->
+    <main class="mt-20">
+        <!-- Hero Section -->
+        <section class="min-h-[70vh] flex items-center justify-center relative overflow-hidden">
+            <!-- Background Particles (CSS only) -->
+            <div class="absolute inset-0 opacity-20">
+                <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-[#39ff14] rounded-full filter blur-3xl animate-pulse"></div>
+                <div class="absolute bottom-1/4 right-1/4 w-48 h-48 bg-[#00ff88] rounded-full filter blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+            </div>
+            
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="text-center max-w-4xl mx-auto">
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-orbitron font-bold mb-6">
+                        <span class="text-gray-300">My </span>
+                        <span class="neon-text">Technical Arsenal</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                        <span id="hero-subtitle" class="typing-cursor"></span>
+                    </p>
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <a href="#skills-grid" class="px-8 py-3 bg-gradient-to-r from-[#39ff14] to-[#00ff88] text-black font-bold rounded-lg font-orbitron hover-glow transition-all transform hover:scale-105">
+                            Explore Skills
+                        </a>
+                        <a href="portfolio.html" class="px-8 py-3 border border-[#39ff14] text-[#39ff14] font-bold rounded-lg font-orbitron hover:bg-[#39ff14] hover:text-black transition-all transform hover:scale-105">
+                            View Projects
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+                <svg class="w-6 h-6 text-[#39ff14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+                </svg>
+            </div>
+        </section>
+        
+        <!-- Skills Grid Section -->
+        <section id="skills-grid" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-orbitron font-bold mb-4">
+                        <span class="text-gray-300">Core </span>
+                        <span class="neon-text">Competencies</span>
+                    </h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        Specialized expertise in three key domains, each powered by cutting-edge technologies and proven methodologies.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    <!-- Web Apps Card -->
+                    <div class="tilt-card glass-card rounded-2xl p-6 md:p-8 hover-glow transition-all transform hover:-translate-y-2 cursor-pointer" data-tilt>
+                        <div class="tilt-card-inner">
+                            <div class="w-14 h-14 bg-[#39ff14] bg-opacity-20 rounded-xl flex items-center justify-center mb-6 float-animation">
+                                <svg class="w-8 h-8 text-[#39ff14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-orbitron font-bold text-[#39ff14] mb-4">Web Applications</h3>
+                            <p class="text-gray-400 mb-6">
+                                Full-stack development with modern frameworks. Building responsive, scalable web apps with real-time features and stunning UI/UX.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">React</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Vue.js</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Node.js</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">TypeScript</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">PostgreSQL</span>
+                            </div>
+                            <div class="code-snippet text-gray-300 p-3 rounded-lg">
+                                <span class="text-[#39ff14]">const</span> <span class="text-yellow-400">app</span> = <span class="text-purple-400">express</span>();
+                            </div>
+                            <div class="mt-6">
+                                <div class="text-sm text-gray-500 mb-2">Proficiency</div>
+                                <div class="w-full bg-gray-800 rounded-full h-2">
+                                    <div class="progress-bar h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Telegram Bots Card -->
+                    <div class="tilt-card glass-card rounded-2xl p-6 md:p-8 hover-glow transition-all transform hover:-translate-y-2 cursor-pointer" data-tilt>
+                        <div class="tilt-card-inner">
+                            <div class="w-14 h-14 bg-[#39ff14] bg-opacity-20 rounded-xl flex items-center justify-center mb-6 float-animation" style="animation-delay: 0.3s;">
+                                <svg class="w-8 h-8 text-[#39ff14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-orbitron font-bold text-[#39ff14] mb-4">Telegram Bots</h3>
+                            <p class="text-gray-400 mb-6">
+                                Intelligent automation and interaction via Telegram. From simple command bots to complex AI-powered assistants with custom keyboards and inline queries.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Python</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">aiogram</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Telebot</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Webhooks</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Redis</span>
+                            </div>
+                            <div class="code-snippet text-gray-300 p-3 rounded-lg">
+                                <span class="text-[#39ff14]">from</span> aiogram <span class="text-[#39ff14]">import</span> Bot
+                            </div>
+                            <div class="mt-6">
+                                <div class="text-sm text-gray-500 mb-2">Proficiency</div>
+                                <div class="w-full bg-gray-800 rounded-full h-2">
+                                    <div class="progress-bar h-2 rounded-full" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Python Automation Card -->
+                    <div class="tilt-card glass-card rounded-2xl p-6 md:p-8 hover-glow transition-all transform hover:-translate-y-2 cursor-pointer" data-tilt>
+                        <div class="tilt-card-inner">
+                            <div class="w-14 h-14 bg-[#39ff14] bg-opacity-20 rounded-xl flex items-center justify-center mb-6 float-animation" style="animation-delay: 0.6s;">
+                                <svg class="w-8 h-8 text-[#39ff14]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-2xl font-orbitron font-bold text-[#39ff14] mb-4">Python Automation</h3>
+                            <p class="text-gray-400 mb-6">
+                                Scripting and automation solutions for repetitive tasks. Web scraping, data processing, and system automation with reliability and efficiency.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">BeautifulSoup</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Selenium</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Pandas</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Requests</span>
+                                <span class="px-3 py-1 bg-gray-800 text-gray-300 text-xs rounded-full">Cron</span>
+                            </div>
+                            <div class="code-snippet text-gray-300 p-3 rounded-lg">
+                                <span class="text-purple-400">import</span> <span class="text-yellow-400">pandas</span> <span class="text-[#39ff14]">as</span> pd
+                            </div>
+                            <div class="mt-6">
+                                <div class="text-sm text-gray-500 mb-2">Proficiency</div>
+                                <div class="w-full bg-gray-800 rounded-full h-2">
+                                    <div class="progress-bar h-2 rounded-full" style="width: 88%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Detailed Skills Breakdown -->
+        <section class="py-20 md:py-32 bg-[#0e1412]">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-orbitron font-bold mb-4">
+                        <span class="text-gray-300">Technical </span>
+                        <span class="neon-text">Breakdown</span>
+                    </h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        A closer look at the technologies and methodologies powering each domain.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-7xl mx-auto">
+                    <!-- Web Apps Detail -->
+                    <div class="glass-card rounded-2xl p-8 hover-glow transition-all">
+                        <h3 class="text-xl font-orbitron font-bold text-[#39ff14] mb-6">Web Application Stack</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Frontend Frameworks</h4>
+                                <p class="text-gray-400 text-sm">React with hooks and context, Vue.js with Composition API, state management with Redux/Context.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Backend & APIs</h4>
+                                <p class="text-gray-400 text-sm">Node.js/Express, RESTful APIs, GraphQL, WebSocket for real-time features, JWT authentication.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Database & Storage</h4>
+                                <p class="text-gray-400 text-sm">PostgreSQL, MongoDB, Redis for caching, Firebase for real-time data, AWS S3 for file storage.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">DevOps & Deployment</h4>
+                                <p class="text-gray-400 text-sm">Docker containers, CI/CD pipelines, AWS/Heroku deployment, Nginx configuration, SSL certificates.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Telegram Bots Detail -->
+                    <div class="glass-card rounded-2xl p-8 hover-glow transition-all">
+                        <h3 class="text-xl font-orbitron font-bold text-[#39ff14] mb-6">Bot Architecture</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Bot Libraries</h4>
+                                <p class="text-gray-400 text-sm">aiogram (async-first), python-telegram-bot, Telebot. Webhook vs Polling strategies.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">State Management</h4>
+                                <p class="text-gray-400 text-sm">Finite State Machines (FSM), Redis for session storage, custom middleware for logging.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Features & Integrations</h4>
+                                <p class="text-gray-400 text-sm">Inline keyboards, custom keyboards, payment gateways, file handling, webhook integrations.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Scalability</h4>
+                                <p class="text-gray-400 text-sm">Load balancing, asynchronous processing, rate limiting, error handling & monitoring.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Python Automation Detail -->
+                    <div class="glass-card rounded-2xl p-8 hover-glow transition-all">
+                        <h3 class="text-xl font-orbitron font-bold text-[#39ff14] mb-6">Automation Toolkit</h3>
+                        <div class="space-y-6">
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Web Scraping</h4>
+                                <p class="text-gray-400 text-sm">BeautifulSoup, lxml, Scrapy, Selenium for dynamic content, headless browsers.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Data Processing</h4>
+                                <p class="text-gray-400 text-sm">Pandas for data manipulation, NumPy for calculations, OpenPyXL for Excel automation.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">Task Scheduling</h4>
+                                <p class="text-gray-400 text-sm">Cron jobs, Celery for distributed task queues, APScheduler for complex schedules.</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-300 mb-2">System Integration</h4>
+                                <p class="text-gray-400 text-sm">API integrations, email automation, file system operations, GUI automation with PyAutoGUI.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tools & Technologies -->
+                    <div class="glass-card rounded-2xl p-8 hover-glow transition-all">
+                        <h3 class="text-xl font-orbitron font-bold text-[#39ff14] mb-6">Core Tools</h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Git</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">VS Code</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Docker</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Postman</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Figma</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Jira</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Slack</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Linux</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">AWS</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">GCP</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Firebase</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">MongoDB</span>
+                            <span class="px-4 py-2 bg-gray-800 text-gray-300 rounded-lg text-sm font-mono hover:bg-gray-700 transition-all">Redis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Skill Development Timeline -->
+        <section class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-5xl font-orbitron font-bold mb-4">
+                        <span class="text-gray-300">Skill </span>
+                        <span class="neon-text">Progression</span>
+                    </h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">
+                        Journey from foundational knowledge to advanced mastery across key technologies.
+                    </p>
+                </div>
+                
+                <div class="max-w-3xl mx-auto relative">
+                    <!-- Vertical Line -->
+                    <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-[#39ff14] via-[#39ff14] to-transparent"></div>
+                    
+                    <!-- Timeline Items -->
+                    <div class="space-y-12">
+                        <!-- Item 1 -->
+                        <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                            <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#39ff14] rounded-full neon-shadow z-10"></div>
+                            <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 mb-4 md:mb-0">
+                                <div class="glass-card rounded-xl p-6 hover-glow transition-all">
+                                    <h4 class="text-lg font-orbitron font-bold text-[#39ff14]">Foundation (2020)</h4>
+                                    <p class="text-gray-400 mt-2">Started with HTML, CSS, JavaScript fundamentals. Built first static websites and simple scripts.</p>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                        
+                        <!-- Item 2 -->
+                        <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                            <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#39ff14] rounded-full neon-shadow z-10"></div>
+                            <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 mb-4 md:mb-0"></div>
+                            <div class="md:w-1/2 md:pl-12">
+                                <div class="glass-card rounded-xl p-6 hover-glow transition-all">
+                                    <h4 class="text-lg font-orbitron font-bold text-[#39ff14]">Frontend Evolution (2021)</h4>
+                                    <p class="text-gray-400 mt-2">Mastered React and Vue.js. Introduced to component-based architecture and state management.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 3 -->
+                        <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                            <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#39ff14] rounded-full neon-shadow z-10"></div>
+                            <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 mb-4 md:mb-0">
+                                <div class="glass-card rounded-xl p-6 hover-glow transition-all">
+                                    <h4 class="text-lg font-orbitron font-bold text-[#39ff14]">Backend & Python (2022)</h4>
+                                    <p class="text-gray-400 mt-2">Learned Node.js, Express, and Python automation. Built first Telegram bot and REST APIs.</p>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                        
+                        <!-- Item 4 -->
+                        <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                            <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#39ff14] rounded-full neon-shadow z-10"></div>
+                            <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 mb-4 md:mb-0"></div>
+                            <div class="md:w-1/2 md:pl-12">
+                                <div class="glass-card rounded-xl p-6 hover-glow transition-all">
+                                    <h4 class="text-lg font-orbitron font-bold text-[#39ff14]">Full-Stack Mastery (2023)</h4>
+                                    <p class="text-gray-400 mt-2">Advanced React, TypeScript, database design, and cloud deployment. Production-ready applications.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Item 5 -->
+                        <div class="relative flex flex-col md:flex-row items-start md:items-center">
+                            <div class="absolute left-8 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-[#39ff14] rounded-full neon-shadow z-10"></div>
+                            <div class="ml-16 md:ml-0 md:w-1/2 md:pr-12 mb-4 md:mb-0">
+                                <div class="glass-card rounded-xl p-6 hover-glow transition-all">
+                                    <h4 class="text-lg font-orbitron font-bold text-[#39ff14]">Specialization (2024)</h4>
+                                    <p class="text-gray-400 mt-2">Focus on AI integration, advanced bot architectures, and scalable automation solutions.</p>
+                                </div>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CTA Section -->
+        <section class="py-20 md:py-32 bg-[#0e1412]">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-5xl font-orbitron font-bold mb-6">
+                    <span class="text-gray-300">Ready to </span>
+                    <span class="neon-text">Collaborate?</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto mb-8">
+                    Let's build something amazing together. I'm available for freelance projects and full-time opportunities.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="contact.html" class="px-8 py-3 bg-gradient-to-r from-[#39ff14] to-[#00ff88] text-black font-bold rounded-lg font-orbitron hover-glow transition-all transform hover:scale-105">
+                        Get In Touch
+                    </a>
+                    <a href="portfolio.html" class="px-8 py-3 border border-[#39ff14] text-[#39ff14] font-bold rounded-lg font-orbitron hover:bg-[#39ff14] hover:text-black transition-all transform hover:scale-105">
+                        See My Work
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer Include -->
+    <div data-include='footer.html'></div>
+    
+    <!-- Include Handler Script (Must be at the end of body) -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('[data-include]').forEach(el => {
+                fetch(el.getAttribute('data-include'))
+                    .then(response => response.text())
+                    .then(data => {
+                        el.innerHTML = data;
+                        // Execute scripts found in specific component
+                        el.querySelectorAll('script').forEach(oldScript => {
+                            const newScript = document.createElement('script');
+                            Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+                            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+                            document.body.appendChild(newScript);
+                        });
+                    });
+            });
+        });
+    </script>
+    
+    <!-- Page-Specific JavaScript -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Initialize after DOM is ready (including includes)
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Wait a bit for includes to load
+            setTimeout(() => {
+                
+                // 1. Typing Animation for Hero Subtitle
+                const subtitleElement = document.getElementById('hero-subtitle');
+                if (subtitleElement) {
+                    const texts = [
+                        "Building the future, one line of code at a time.",
+                        "Specializing in Telegram Bots & Python Automation.",
+                        "Creating seamless web experiences.",
+                        "Turning complex problems into elegant solutions."
+                    ];
+                    
+                    let textIndex = 0;
+                    let charIndex = 0;
+                    let isDeleting = false;
+                    
+                    function type() {
+                        const currentText = texts[textIndex];
+                        
+                        if (isDeleting) {
+                            subtitleElement.textContent = currentText.substring(0, charIndex - 1);
+                            charIndex--;
+                        } else {
+                            subtitleElement.textContent = currentText.substring(0, charIndex + 1);
+                            charIndex++;
+                        }
+                        
+                        if (!isDeleting && charIndex === currentText.length) {
+                            isDeleting = true;
+                            setTimeout(type, 2000); // Pause at end
+                        } else if (isDeleting && charIndex === 0) {
+                            isDeleting = false;
+                            textIndex = (textIndex + 1) % texts.length;
+                            setTimeout(type, 500); // Pause before typing next
+                        } else {
+                            setTimeout(type, isDeleting ? 50 : 100);
+                        }
+                    }
+                    
+                    type();
+                }
+                
+                // 2. 3D Tilt Effect on Cards
+                const tiltCards = document.querySelectorAll('[data-tilt]');
+                tiltCards.forEach(card => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const rotateX = ((y - centerY) / centerY) * -10; // Max 10deg rotation
+                        const rotateY = ((x - centerX) / centerX) * 10;
+                        
+                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                    });
+                    
+                    card.addEventListener('mouseleave', () => {
+                        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    });
+                });
+                
+                // 3. GSAP Scroll Animations
+                gsap.utils.toArray('section').forEach(section => {
+                    gsap.fromTo(section,
+                        { opacity: 0, y: 60 },
+                        {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: section,
+                                start: 'top 80%',
+                                end: 'bottom 20%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                });
+                
+                // 4. Animate Progress Bars on Scroll
+                const progressBars = document.querySelectorAll('.progress-bar');
+                progressBars.forEach(bar => {
+                    gsap.fromTo(bar,
+                        { width: 0 },
+                        {
+                            width: bar.style.width,
+                            duration: 1.5,
+                            ease: 'power2.out',
+                            scrollTrigger: {
+                                trigger: bar,
+                                start: 'top 90%',
+                                toggleActions: 'play none none none'
+                            }
+                        }
+                    );
+                });
+                
+                // 5. Timeline Animations
+                const timelineItems = document.querySelectorAll('.glass-card.rounded-xl');
+                gsap.fromTo(timelineItems,
+                    { opacity: 0, x: -50 },
+                    {
+                        opacity: 1,
+                        x: 0,
+                        duration: 0.6,
+                        stagger: 0.2,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: '.space-y-12',
+                            start: 'top 80%',
+                            toggleActions: 'play none none none'
+                        }
+                    }
+                );
+                
+                // 6. Cursor Particle Trail (Simple CSS implementation)
+                let cursorTrail = [];
+                const maxTrailLength = 10;
+                
+                document.addEventListener('mousemove', (e) => {
+                    // Create trail dot
+                    const dot = document.createElement('div');
+                    dot.className = 'cursor-trail';
+                    dot.style.left = e.clientX + 'px';
+                    dot.style.top = e.clientY + 'px';
+                    document.body.appendChild(dot);
+                    cursorTrail.push(dot);
+                    
+                    // Limit trail length
+                    if (cursorTrail.length > maxTrailLength) {
+                        const oldDot = cursorTrail.shift();
+                        if (oldDot) oldDot.remove();
+                    }
+                    
+                    // Fade out dots
+                    cursorTrail.forEach((dot, index) => {
+                        setTimeout(() => {
+                            if (dot) {
+                                dot.style.opacity = Math.max(0, 0.6 - (index * 0.1));
+                                dot.style.transform = `scale(${1 - index * 0.1})`;
+                            }
+                        }, 50 * index);
+                    });
+                });
+                
+                // 7. Smooth Scroll for anchor links
+                document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                    anchor.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const target = document.querySelector(this.getAttribute('href'));
+                        if (target) {
+                            target.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    });
+                });
+                
+            }, 300); // Wait for includes to load
+        });
+    </script>
+</body>
+</html>
